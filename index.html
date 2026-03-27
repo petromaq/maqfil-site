@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAQFIL | Filtros e Soluções Industriais</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container nav">
+      <div class="logo-area">
+        <img src="logo 2.png" alt="MAQFIL" class="logo">
+      </div>
+      <nav>
+        <a href="#inicio">Início</a>
+        <a href="#Produtos">Produtos</a>
+        <a href="#Empresa">Empresa</a>
+        <a href="#Contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1>Filtração de alto desempenho para motores exigentes.</h1>
+        <p>
+          Soluções confiáveis para transporte, maquinaria e indústria.
+          MAQFIL é uma marca pensada e desenvolvida no Brasil, com fabricação internacional focada em oferecer qualidade, desempenho e confiança.
+        </p>
+        <a href="#Contato" class="btn">Solicitar cotação</a>
+      </div>
+
+      <div class="hero-image">
+        <img class="slide active" src="filtro 1.png" alt="Filtro 1">
+        <img class="slide" src="filtro 2.png" alt="Filtro 2">
+        <img class="slide" src="filtro 3.png" alt="Filtro 3">
+      </div>
+    </div>
+  </section>
+
+  <section class="brands">
+    <div class="container brands-logos">
+      <img src="volvo.png" alt="Volvo">
+      <img src="mercedez.png" alt="Mercedes-Benz">
+      <img src="scania.png" alt="Scania">
+      <img src="nissan.png" alt="Nissan">
+      <img src="wolwagen.png" alt="Volkswagen">
+      <img src="foton.png" alt="Foton">
+    </div>
+  </section>
+
+  <section class="products" id="Produtos">
+    <div class="container">
+      <h2>Nossas linhas de produtos</h2>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Filtros de óleo</h3>
+          <p>Proteção eficiente para motores submetidos a trabalho pesado.</p>
+        </div>
+
+        <div class="card">
+          <h3>Filtros de combustível</h3>
+          <p>Maior pureza para sistemas diesel exigentes.</p>
+        </div>
+
+        <div class="card">
+          <h3>Filtros de ar</h3>
+          <p>Melhor admissão e maior vida útil do motor.</p>
+        </div>
+
+        <div class="card">
+          <h3>Filtros hidráulicos</h3>
+          <p>Desempenho e segurança para equipamentos industriais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="Empresa">
+    <div class="container">
+      <h2>Uma marca criada para gerar confiança</h2>
+      <p>
+        A MAQFIL nasce com o propósito de oferecer soluções confiáveis para os setores industrial, de transporte e de maquinaria. Sua identidade combina solidez técnica, qualidade e visión comercial, projetando uma marca moderna preparada para construir relações comerciais sustentáveis e de longo prazo.
+      </p>
+    </div>
+  </section>
+
+  <section class="contact" id="Contato">
+    <div class="container">
+      <h2>Contato</h2>
+      <p>Solicite informações comerciais ou uma cotação personalizada.</p>
+
+      <form class="contact-form" id="contactForm">
+        <input type="text" name="nome" placeholder="Seu nome" required>
+        <input type="text" name="empresa" placeholder="Sua empresa">
+        <input type="email" name="email" placeholder="Seu e-mail" required>
+        <input type="text" name="telefone" placeholder="Seu telefone ou WhatsApp">
+        <textarea name="mensagem" placeholder="Escreva sua mensagem" required></textarea>
+        <button type="submit">Enviar mensagem</button>
+      </form>
+
+      <p id="statusMensagem" style="text-align:center; margin-top:15px;"></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 MAQFIL. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    let index = 0;
+
+    function cambiarImagen() {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }
+
+    setInterval(cambiarImagen, 3000);
+
+    const form = document.getElementById("contactForm");
+    const statusMensagem = document.getElementById("statusMensagem");
+
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      statusMensagem.innerText = "Enviando...";
+
+      const formData = new FormData(form);
+
+      const payload = {
+        nome: formData.get("nome"),
+        empresa: formData.get("empresa"),
+        email: formData.get("email"),
+        telefone: formData.get("telefone"),
+        mensagem: formData.get("mensagem")
+      };
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxLHlZbMq8xt1Dxp5cnlqUP2XJ2YV5sJxI_zcHqk3sYL2DZkr3l5bfNutYBptWP7P2I/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.result === "success") {
+          statusMensagem.innerText = "Mensagem enviada com sucesso!";
+          form.reset();
+        } else {
+          statusMensagem.innerText = "Erro ao enviar: " + result.message;
+          console.error("Erro do Apps Script:", result.message);
+        }
+
+      } catch (error) {
+        statusMensagem.innerText = "Erro ao enviar. Tente novamente.";
+        console.error("Erro:", error);
+      }
+    });
+  </script>
+
+</body>
+</html>
